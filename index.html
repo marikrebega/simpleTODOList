@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="list">
+        <div class="list-header">
+            <i class="fas fa-clipboard-list"></i>
+            <p class="list-name">Test-list for Example</p>
+            <input class="list-edit no-edit-mode" type="text">
+            <div class="edit-items-list">
+                <i class="fas fa-edit header-items"></i>
+                <i class="fas fa-trash-alt header-items"></i>
+            </div>
+        </div>
+        <div class="add-task">
+            <i class="fas fa-plus"></i>
+            <form class="input-task" onsubmit="return false;">
+                <input class="text-task" type="text" placeholder="Start typing here to create a task...">
+                <button class="submit-task" type="button">Add Task</button>
+            </form>
+        </div>
+        <div class="task-list">
+            <ul>
+                <li class="task">
+                    <div class="isDone">
+                        <input type="checkbox">
+                    </div>
+                    <p class="task-name">buy a milk</p>
+                    <input class="task-edit no-edit-mode" type="text">
+                    <div class="edit-items">
+                        <i class="fas fa-arrows-alt-v icon-border task-item"></i>
+                        <i class="fas fa-edit icon-border task-item"></i>
+                        <i class="fas fa-trash-alt task-item"></i>
+                    </div>
+                </li>
+                <li class="task">
+                    <div class="isDone">
+                        <input type="checkbox">
+                    </div>
+                    <p class="task-name">read a book</p>
+                    <input class="task-edit no-edit-mode" type="text">
+                    <div class="edit-items">
+                        <i id="d" class="fas fa-arrows-alt-v icon-border task-item"></i>
+                        <i class="fas fa-edit icon-border task-item"></i>
+                        <i class="fas fa-trash-alt task-item"></i>
+                    </div>
+                </li>
+                <li class="task">
+                    <div class="isDone">
+                        <input type="checkbox">
+                    </div>
+                    <p class="task-name">check a mail</p>
+                    <input class="task-edit no-edit-mode" type="text">
+                    <div class="edit-items">
+                        <i class="fas fa-arrows-alt-v icon-border task-item"></i>
+                        <i class="fas fa-edit icon-border task-item"></i>
+                        <i class="fas fa-trash-alt task-item"></i>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <button id="add-list">
+        <i class="fas fa-plus" type="button"></i> Add TODO List
+    </button>
+</body>
+</html>

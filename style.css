@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    color: white;
+    font-family: "Arial", sans-serif;
+}
+
+::placeholder {
+    color: #bbbbbb;
+}
+
+.background-image {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-image: url(images/background.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    filter: blur(30px);
+    z-index: -1;
+}
+
+.list {
+    background-color: white;
+    margin: 10px auto 60px auto;
+    padding-bottom: 1px;
+    width: 60%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+}
+
+.task>input, .input-task, .task-name, .list-name, .fas, .edit-items-list {
+    display: inline-flex!important;
+}
+
+.list-name {
+    margin-left: 15px;
+    overflow: auto;
+    max-width: calc(100% - 132px);
+    word-break:keep-all;
+    max-height: 29px;
+    overflow-y: hidden;
+}
+
+.list-edit {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    border: none;
+    height: 40px;
+    padding: 10px;
+    color: #999999;
+    font-size: 25px;
+    overflow: auto;
+    width: calc(100% - 140px);
+    word-break: break-word;
+    left: 39px;
+    box-shadow: inset 0px 0px 3px rgba(255,0,0,0.9);
+    vertical-align: middle;
+}
+
+.list-header {
+    position: relative;
+    background-color: #4875ad;
+    padding: 10px;
+    font-size: 25px;
+}
+
+.edit-items-list {
+    float: right;
+}
+
+.header-items {
+    color: #98b0d2;
+    padding: 0 10px;
+}
+
+.header-items:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.header-items:first-child {
+    border-right:  1px solid #5284bf;
+}
+
+.add-task {
+    background-color: #cfcfcf;
+    padding: 10px;
+    font-size: 25px;
+}
+
+.add-task>i {
+    vertical-align: middle;
+    color: #5a9074;
+}
+
+.input-task {
+    width: calc(100% - 40px);
+    margin-left: 10px;
+    border: 1px solid #447557;
+    border-radius: 0 10px 10px 0;
+    overflow: hidden;
+    color: white;
+}
+
+.text-task {
+    width: calc(100% - 60px);
+    height: 35px;
+    border: 0px;
+    color: #999999;
+    font-size: 20px;
+    box-shadow: inset 0px 0px 3px rgba(0,0,0,0.9);
+    padding: 0 10px;
+}
+
+.submit-task{
+    position: relative;
+    float: right;
+    width: 75px;
+    height: 35px;
+    padding: 5px;
+    background-image: linear-gradient(#94cbae, #508767);
+    border: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.submit-task:hover {
+    background-image: linear-gradient(#a9d6be, #6eaa87);
+}
+
+.task {
+    position: relative;
+    font-size: 20px;
+    border-bottom: 1px solid #e7ebea;
+}
+
+.task:last-child {
+    border: 0;
+}
+
+.isDone {
+    border-right: 1px solid #e7ebea;
+    padding: 10px 5px;
+    height: 40px;
+    margin: 0 5px;
+    display: inline;
+}
+
+.isDone>input {
+    cursor: pointer;
+}
+
+#inhh:checked ~ .task-name{
+    text-decoration: line-through;
+}
+
+.task-name {
+    height: 40px;
+    padding: 10px;
+    border-left: 1px solid #e7ebea;
+    color: #999999;
+    overflow: auto;
+    max-width: calc(100% - 132px);
+    word-break: break-word;
+}
+
+.task-edit {
+    position: absolute;
+    border: none;
+    height: 40px;
+    padding: 10px;
+    border-left: 1px solid #e7ebea;
+    color: #999999;
+    font-size: 20px;
+    overflow: auto;
+    width: calc(100% - 129.5px);
+    word-break: break-word;
+    left: 39px;
+    box-shadow: inset 0px 0px 3px rgba(255,0,0,0.9);
+}
+
+.no-edit-mode {
+    z-index: -1;
+}
+
+.edit-items {
+    height: 40px;
+    padding: 5px;
+    float: right;
+    border-left: 1px solid #e7ebea;
+    display: none;
+}
+
+.task:hover .edit-items {
+    display: block;
+}
+
+.task:hover {
+    background-color: #fcfed5;
+}
+
+.icon-border {
+    border-right: 1px solid #cccccc;
+}
+
+.task-item {
+    font-size: 15px;
+    padding: 0 5px;
+    color: #999999;
+    vertical-align: middle;
+}
+
+.task-item:hover {
+    cursor: pointer;
+    color: black;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.15); 
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: rgba(200,200,200); 
+}
+
+
+#add-list {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 10px;
+    background-color: #4875ad;
+    padding: 10px;
+    border: none;
+}
+
+#add-list:hover {
+    background-color: #5d88bb;
+    cursor: pointer;
+}
