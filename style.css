@@ -238,6 +238,9 @@
     background: rgba(200,200,200); 
 }
 
+.ghost {
+    opacity: 0.4;
+}
 
 #add-list {
     position: fixed;
