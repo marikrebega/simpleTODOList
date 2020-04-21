@@ -42,7 +42,7 @@
     margin-left: 15px;
     overflow: auto;
     max-width: calc(100% - 132px);
-    word-break:keep-all;
+    white-space: nowrap;
     max-height: 29px;
     overflow-y: hidden;
 }
@@ -135,6 +135,10 @@
     background-image: linear-gradient(#a9d6be, #6eaa87);
 }
 
+ul {
+    user-select: none;
+}
+
 .task {
     position: relative;
     font-size: 20px;
@@ -170,6 +174,7 @@
     overflow: auto;
     max-width: calc(100% - 132px);
     word-break: break-word;
+    user-select: auto;
 }
 
 .task-edit {
@@ -223,6 +228,10 @@
     color: black;
 }
 
+.fa-arrows-alt-v:hover {
+    cursor: ns-resize;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 3px;
@@ -239,7 +248,8 @@
 }
 
 .ghost {
-    opacity: 0.4;
+    background-color: #f2f2f2;
+    border: 2px dashed black;
 }
 
 #add-list {
