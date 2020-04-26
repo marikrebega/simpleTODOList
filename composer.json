@@ -1,0 +1,10 @@
+{
+    "name": "marik/simple-todo-list",
+    "authors": [
+        {
+            "name": "Marian Rebeha",
+            "email": "marikrebega@gmail.com"
+        }
+    ],
+    "require": {}
+}
