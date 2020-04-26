@@ -1,13 +1,155 @@
 window.onload = function () {
-    
-    var addTaskButton = document.querySelector(".submit-task");
-    addTaskButton.onclick = addTask;
-    
-    var list = document.querySelector(".list");
-    bindListEvent(list);
-    
+	
+	function start() {
+		var listsQuery = selectList();
+		
+		for (let i = 0; i<listsQuery.length; i++){
+			console.log("QUERY LIST: ",listsQuery[i]);
+			document.querySelector('body').append(startCreateList(listsQuery[i]));
+		}
+		
+		var lists = document.getElementsByClassName('list');
+		for (let i = 0; i< lists.length; i++){
+			bindListEvent(lists[i]);
+			console.log(lists[i]);
+			console.log("DATA-ID list[",i,"] =",lists[i].dataset.id);
+			
+			var tasksQuery = selectTask(lists[i].dataset.id);
+			for (let j = 0; j<tasksQuery.length; j++) {
+				startAddTask(tasksQuery[j], lists[i]);
+			}
+		}
+	}
+	
+	start();
+	
     var addListButton = document.querySelector("#add-list");
     addListButton.onclick = addList;
+	
+	
+	function dragTask(tasks) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "dragTask.php?tasks="+tasks, false);
+		xhttp.send();
+	}
+	function selectTask(id) {
+		var tasks;
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				tasks = JSON.parse(this.responseText);
+				console.log("QUERY TASKS", tasks);
+			}
+		}
+		xhttp.open("GET", "selectTask.php?id="+id, false);
+		xhttp.send();
+		
+		return tasks;
+	}
+	function selectList() {
+		var lists;
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				lists = JSON.parse(this.responseText);
+				console.log(lists);
+			}
+		}
+		xhttp.open("GET", "selectList.php", false);
+		xhttp.send();
+		
+		return lists;
+	}
+	function insertTask(name, pId) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "insertTask.php?name="+name+"&p_id="+pId, true);
+		xhttp.send();
+	}
+	function insertList() {
+		var maxId;
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				maxId = this.responseText;
+				console.log(maxId);
+			}
+		}
+		xhttp.open("GET", "insertList.php", false);
+		xhttp.send();
+		
+		return maxId;
+	}
+	function updateTask(pId, oldName, newName, status) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "updateTask.php?p_id=" +pId+ "&old_name=" +oldName+ "&new_name=" +newName+ "&status=" +status, false);
+		xhttp.send();
+	}
+	function updateList(id, name) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "updateList.php?id="+id + "&name="+name, true);
+		xhttp.send();
+	}
+	function deleteTaskQuery(name) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "deleteTask.php?name="+name, true);
+		xhttp.send();
+	}
+	function deleteListQuery(id) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "deleteList.php?id="+id, true);
+		xhttp.send();
+	}
+	
+	function startAddTask (task, list) {
+        var taskList = list.querySelector("ul");
+		console.log("add task data", task);
+		
+		var listItem = createTask(task.name);
+		if (task.status == 1) {
+			listItem.querySelector("input[type=checkbox]").checked = true;
+			finishedCreate(listItem.querySelector("input[type=checkbox]"));
+		}
+		taskList.append(listItem);
+        bindTaskEvent(listItem);
+    }
+	function startCreateList (listQ) {
+		var list = document.createElement("div");
+		list.className = "list";
+		list.dataset.id = listQ.id;
+		
+		var listHeader = document.createElement("div");
+		listHeader.className = "list-header";
+		var iconList = document.createElement("i");
+		iconList.className = "fas fa-calendar-alt";
+		var listName = document.createElement("p");
+		listName.className = "list-name";
+		listName.innerHTML = listQ.name;
+		var listEdit = document.createElement("input");
+		listEdit.className = "list-edit no-edit-mode";
+		listEdit.type = "text";
+		var editItems = document.createElement("div");
+		editItems.className = "edit-items-list";
+		editItems.innerHTML = '<i class="fas fa-edit header-items"></i>\n<i class="fas fa-trash-alt header-items"></i>';
+		listHeader.append(iconList);
+		listHeader.append(listName);
+		listHeader.append(listEdit);
+		listHeader.append(editItems);
+		
+		var addTaskDiv = document.createElement("div");
+		addTaskDiv.className = "add-task";
+		addTaskDiv.innerHTML = '<i class="fas fa-plus"></i>\n<form class="input-task" onsubmit="return false;">\n<input class="text-task" type="text" placeholder="Start typing here to create a task...">\n<button class="submit-task" type="button">Add Task</button>\n</form>'
+		
+		var taskList = document.createElement("div");
+		taskList.className = "task-list";
+		var ul = document.createElement("ul");
+		taskList.append(ul);
+		
+		list.append(listHeader);
+		list.append(addTaskDiv);
+		list.append(taskList);
+		
+		return list;
+	}
     
     function createTask (task) {
         var listItem = document.createElement("li");
@@ -43,45 +185,73 @@ window.onload = function () {
         
         return listItem
     }
-    
-    function addTask (event) {
+    function addTask () {
         var textTask = this.parentNode.querySelector(".text-task");
         var taskList = this.parentNode.parentNode.parentNode.querySelector("ul");
+		var list = taskList.parentNode.parentNode;
+		
         if(textTask.value) {
-            var listItem = createTask(textTask.value)
+			insertTask(textTask.value, list.dataset.id);
+			
+            var listItem = createTask(textTask.value);
             taskList.append(listItem);
         }
         textTask.value = "";
         bindTaskEvent(listItem);
-        console.log(event.target);
+        console.log(this);
     }
     
-    
-    function createList () {
-        var newList = list.cloneNode(true);
-        var ul = newList.querySelector("ul")
-        while (ul.firstChild) {
-            ul.removeChild(ul.firstChild);
-        }
-        newList.querySelector(".submit-task").onclick = addTask;
-        
-        var nameList = newList.getElementsByClassName('list-name')[0];
-        nameList.innerHTML = "new TODO List";
-        
-        return newList;
+    function createList (id) {
+        var list = document.createElement("div");
+		list.className = "list";
+		list.dataset.id = id;
+		
+		var listHeader = document.createElement("div");
+		listHeader.className = "list-header";
+		var iconList = document.createElement("i");
+		iconList.className = "fas fa-calendar-alt";
+		var listName = document.createElement("p");
+		listName.className = "list-name";
+		listName.innerHTML = "new TODO List("+id+")";
+		var listEdit = document.createElement("input");
+		listEdit.className = "list-edit no-edit-mode";
+		listEdit.type = "text";
+		var editItems = document.createElement("div");
+		editItems.className = "edit-items-list";
+		editItems.innerHTML = '<i class="fas fa-edit header-items"></i>\n<i class="fas fa-trash-alt header-items"></i>';
+		listHeader.append(iconList);
+		listHeader.append(listName);
+		listHeader.append(listEdit);
+		listHeader.append(editItems);
+		
+		var addTaskDiv = document.createElement("div");
+		addTaskDiv.className = "add-task";
+		addTaskDiv.innerHTML = '<i class="fas fa-plus"></i>\n<form class="input-task" onsubmit="return false;">\n<input class="text-task" type="text" placeholder="Start typing here to create a task...">\n<button class="submit-task" type="button">Add Task</button>\n</form>'
+		
+		var taskList = document.createElement("div");
+		taskList.className = "task-list";
+		var ul = document.createElement("ul");
+		taskList.append(ul);
+		
+		list.append(listHeader);
+		list.append(addTaskDiv);
+		list.append(taskList);
+		
+		return list;
     }
-    
     function addList (event) {
-        var list = createList();
-        document.querySelector("body").append(list);
-        bindListEvent(list);
+		var id = insertList();
+        var newList = createList(id);
+		
+        document.querySelector("body").append(newList);
+        bindListEvent(newList);
     }
-    
-    function finished () {
-        var listItem = this.parentNode.parentNode;
+	
+	function finishedCreate (checkbox) {
+        var listItem = checkbox.parentNode.parentNode;
         var p = listItem.querySelector("p");
         
-        if(this.checked) {
+        if(checkbox.checked) {
             p.style.textDecoration = "line-through";
             listItem.style.backgroundColor = "#d9d9d9";
         }else {
@@ -90,6 +260,23 @@ window.onload = function () {
         }
     }
     
+    function finished () {
+        var listItem = this.parentNode.parentNode;
+        var p = listItem.querySelector("p");
+        
+		var oldName = p.textContent;
+		var pId = listItem.parentNode.parentNode.parentNode.dataset.id;
+		
+        if(this.checked) {
+            p.style.textDecoration = "line-through";
+            listItem.style.backgroundColor = "#d9d9d9";
+			updateTask(pId,oldName,oldName,1);
+        }else {
+            p.style.textDecoration = "none";
+            listItem.style.backgroundColor = "white";
+			updateTask(pId,oldName,oldName,0);
+        }
+    }
     function sortable(rootEl, onUpdate){
         var dragEl, nextEl;
 
@@ -150,21 +337,45 @@ window.onload = function () {
             }, 0)
         }
     }
-    
-    function dragDropTask () {
+    function dragDropTask () {		
         var ul = this.parentNode.parentNode.parentNode;
         console.log(ul);
         sortable( ul, function (item) {
             console.log(item);
+			
+			var lists = document.getElementsByClassName('list');
+			var tasks = [];
+			var numb = 0;
+			for(let i=0; i<lists.length; i++) {
+				var pIdT = lists[i].dataset.id;
+				var tempTasks = lists[i].getElementsByClassName('task');
+				for(let j=0; j<tempTasks.length; j++){
+					var nameT = tempTasks[j].querySelector('.task-name').textContent;
+					var statusT = tempTasks[j].querySelector('input[type=checkbox]').checked ? 1 : 0;
+
+					var task = {
+						name : nameT,
+						status : statusT,
+						pId : pIdT
+					}
+					tasks[numb] = task;
+					numb++;
+				}
+			}
+			console.log('Prioritize Tasks', tasks);
+			tasks = JSON.stringify(tasks);
+			dragTask(tasks);
         });
     }
-    
     function editTask () {
         var listItem = this.parentNode.parentNode;
         var p = listItem.querySelector("p");
         var input = listItem.querySelector("input[type=text]");
         input.classList.toggle("no-edit-mode");
-        
+		
+		var oldName = p.textContent;
+		var pId = listItem.parentNode.parentNode.parentNode.dataset.id;
+		
         var noEditMode = input.classList.contains("no-edit-mode")
         
         if(!noEditMode) {
@@ -179,18 +390,21 @@ window.onload = function () {
                     listItem.style.backgroundColor = "white";
                     listItem.querySelector("input[type=checkbox]").checked = false;
                 }
+				var newName = p.textContent;
+				updateTask(pId,oldName,newName,0);
+				oldName = newName;
             }
         }else {
             this.classList.remove("fa-check");
             this.classList.add("fa-edit");
         }
     }
-    
     function deleteTask () {
         var li = this.parentNode.parentNode;
         li.remove(li);
+		console.log(li.querySelector(".task-name").textContent);
+		deleteTaskQuery(li.querySelector(".task-name").textContent);
     }
-    
     function bindTaskEvent (listItem) {
         var checkbox = listItem.querySelector("input[type=checkbox]");
         var dragButton = listItem.querySelector(".task-item.fa-arrows-alt-v");
@@ -223,19 +437,21 @@ window.onload = function () {
         }else {
             this.classList.remove("fa-check");
             this.classList.add("fa-edit");
+			updateList(list.parentNode.dataset.id, input.value);
         }
     }
-    
     function deleteList () {
         var list = this.parentNode.parentNode.parentNode;
+		deleteListQuery(list.dataset.id);
         list.remove(list);
     }
-    
     function bindListEvent (list) {
         var editButton = list.querySelector(".fa-edit.header-items");
         var deleteButton = list.querySelector(".fa-trash-alt.header-items");
+		var addTaskButton = list.querySelector(".submit-task");
         
         editButton.onclick = editList;
         deleteButton.onclick = deleteList;
+		addTaskButton.onclick = addTask;
     }
 }

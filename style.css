@@ -71,7 +71,12 @@
     font-size: 25px;
 }
 
+.list-header:hover .edit-items-list {
+	display: block!important;
+}
+
 .edit-items-list {
+	display: none!important;
     float: right;
 }
 
@@ -254,6 +259,7 @@ ul {
 
 #add-list {
     position: fixed;
+	z-index: 1;
     left: 50%;
     transform: translate(-50%, 0);
     bottom: 10px;
