@@ -28,4 +28,4 @@ select tasks.name, status, count(tasks.name) as count from tasks inner join proj
 
 /*8 - get the list of project names having more than 10 tasks in status
 'completed'. Order by project_id*/
-select projects.name, count(status) as count from tasks inner join projects on tasks.project_id = projects.id where status = 1 group by projects.name having count > 10; 
+select projects.name, count(status) as count from tasks inner join projects on tasks.project_id = projects.id where status = 1 group by projects.name having count > 10 order by project_id; 
