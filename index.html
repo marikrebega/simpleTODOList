@@ -10,68 +10,15 @@
 </head>
 <body>
     <div class="background-image"></div>
-<!--
-    <div class="list" data-id="1">
-        <div class="list-header">
-            <i class="fas fa-clipboard-list"></i>
-            <p class="list-name">Test-list for Example</p>
-            <input class="list-edit no-edit-mode" type="text">
-            <div class="edit-items-list">
-                <i class="fas fa-edit header-items"></i>
-                <i class="fas fa-trash-alt header-items"></i>
-            </div>
-        </div>
-        <div class="add-task">
-            <i class="fas fa-plus"></i>
-            <form class="input-task" onsubmit="return false;">
-                <input class="text-task" type="text" placeholder="Start typing here to create a task...">
-                <button class="submit-task" type="button">Add Task</button>
-            </form>
-        </div>
-        <div class="task-list">
-            <ul>
-                <li class="task">
-                    <div class="isDone">
-                        <input type="checkbox">
-                    </div>
-                    <p class="task-name">buy a milk</p>
-                    <input class="task-edit no-edit-mode" type="text">
-                    <div class="edit-items">
-                        <i class="fas fa-arrows-alt-v icon-border task-item"></i>
-                        <i class="fas fa-edit icon-border task-item"></i>
-                        <i class="fas fa-trash-alt task-item"></i>
-                    </div>
-                </li>
-                <li class="task">
-                    <div class="isDone">
-                        <input type="checkbox">
-                    </div>
-                    <p class="task-name">read a book</p>
-                    <input class="task-edit no-edit-mode" type="text">
-                    <div class="edit-items">
-                        <i id="d" class="fas fa-arrows-alt-v icon-border task-item"></i>
-                        <i class="fas fa-edit icon-border task-item"></i>
-                        <i class="fas fa-trash-alt task-item"></i>
-                    </div>
-                </li>
-                <li class="task">
-                    <div class="isDone">
-                        <input type="checkbox">
-                    </div>
-                    <p class="task-name">check a mail</p>
-                    <input class="task-edit no-edit-mode" type="text">
-                    <div class="edit-items">
-                        <i class="fas fa-arrows-alt-v icon-border task-item"></i>
-                        <i class="fas fa-edit icon-border task-item"></i>
-                        <i class="fas fa-trash-alt task-item"></i>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
--->
     <button id="add-list">
         <i class="fas fa-plus" type="button"></i> Add TODO List
     </button>
+    <div class="modal">
+		<svg class="modal_cross" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"/></svg>
+		
+		<iframe src="" frameborder="0"></iframe>
+		
+	</div>
+    <div class="overlay" id="overlay-modal"></div>
 </body>
 </html>

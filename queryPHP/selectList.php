@@ -10,7 +10,8 @@ $query = $pdo->query($sql);
 while($row = $query->fetch(PDO::FETCH_OBJ)) {
 	$list = [
 		'id' => $row->id,
-		'name' => $row->name
+		'name' => $row->name,
+		'date' => $row->exp_date
 	];
 	
 	$lists[] = $list;

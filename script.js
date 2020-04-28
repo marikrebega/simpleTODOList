@@ -29,7 +29,7 @@ window.onload = function () {
 	
 	function dragTask(tasks) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "dragTask.php?tasks="+tasks, false);
+		xhttp.open("GET", "queryPHP/dragTask.php?tasks="+tasks, false);
 		xhttp.send();
 	}
 	function selectTask(id) {
@@ -41,7 +41,7 @@ window.onload = function () {
 				console.log("QUERY TASKS", tasks);
 			}
 		}
-		xhttp.open("GET", "selectTask.php?id="+id, false);
+		xhttp.open("GET", "queryPHP/selectTask.php?id="+id, false);
 		xhttp.send();
 		
 		return tasks;
@@ -55,14 +55,14 @@ window.onload = function () {
 				console.log(lists);
 			}
 		}
-		xhttp.open("GET", "selectList.php", false);
+		xhttp.open("GET", "queryPHP/selectList.php", false);
 		xhttp.send();
 		
 		return lists;
 	}
 	function insertTask(name, pId) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "insertTask.php?name="+name+"&p_id="+pId, true);
+		xhttp.open("GET", "queryPHP/insertTask.php?name="+name+"&p_id="+pId, true);
 		xhttp.send();
 	}
 	function insertList() {
@@ -74,29 +74,29 @@ window.onload = function () {
 				console.log(maxId);
 			}
 		}
-		xhttp.open("GET", "insertList.php", false);
+		xhttp.open("GET", "queryPHP/insertList.php", false);
 		xhttp.send();
 		
 		return maxId;
 	}
 	function updateTask(pId, oldName, newName, status) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "updateTask.php?p_id=" +pId+ "&old_name=" +oldName+ "&new_name=" +newName+ "&status=" +status, false);
+		xhttp.open("GET", "queryPHP/updateTask.php?p_id=" +pId+ "&old_name=" +oldName+ "&new_name=" +newName+ "&status=" +status, false);
 		xhttp.send();
 	}
 	function updateList(id, name) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "updateList.php?id="+id + "&name="+name, true);
+		xhttp.open("GET", "queryPHP/updateList.php?id="+id + "&name="+name, true);
 		xhttp.send();
 	}
 	function deleteTaskQuery(name) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "deleteTask.php?name="+name, true);
+		xhttp.open("GET", "queryPHP/deleteTask.php?name="+name, true);
 		xhttp.send();
 	}
 	function deleteListQuery(id) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "deleteList.php?id="+id, true);
+		xhttp.open("GET", "queryPHP/deleteList.php?id="+id, true);
 		xhttp.send();
 	}
 	
@@ -116,11 +116,14 @@ window.onload = function () {
 		var list = document.createElement("div");
 		list.className = "list";
 		list.dataset.id = listQ.id;
+		if (listQ.date) {
+			list.dataset.date = listQ.date;
+		}
 		
 		var listHeader = document.createElement("div");
 		listHeader.className = "list-header";
 		var iconList = document.createElement("i");
-		iconList.className = "fas fa-calendar-alt";
+		iconList.className = "fas fa-calendar-alt open-modal";
 		var listName = document.createElement("p");
 		listName.className = "list-name";
 		listName.innerHTML = listQ.name;
@@ -209,7 +212,7 @@ window.onload = function () {
 		var listHeader = document.createElement("div");
 		listHeader.className = "list-header";
 		var iconList = document.createElement("i");
-		iconList.className = "fas fa-calendar-alt";
+		iconList.className = "fas fa-calendar-alt open-modal";
 		var listName = document.createElement("p");
 		listName.className = "list-name";
 		listName.innerHTML = "new TODO List";
@@ -375,6 +378,9 @@ window.onload = function () {
 		
 		var oldName = p.textContent;
 		var pId = listItem.parentNode.parentNode.parentNode.dataset.id;
+		var status = listItem.querySelector("input[type=checkbox]").checked;
+		
+		console.log('status', status);
 		
         var noEditMode = input.classList.contains("no-edit-mode")
         
@@ -386,12 +392,9 @@ window.onload = function () {
             input.oninput = function () {
                 if(input.value != ""){
                     p.innerHTML = input.value;
-                    p.style.textDecoration = "none";
-                    listItem.style.backgroundColor = "white";
-                    listItem.querySelector("input[type=checkbox]").checked = false;
                 }
 				var newName = p.textContent;
-				updateTask(pId,oldName,newName,0);
+				updateTask(pId,oldName,newName,status);
 				oldName = newName;
             }
         }else {
@@ -445,13 +448,42 @@ window.onload = function () {
 		deleteListQuery(list.dataset.id);
         list.remove(list);
     }
+	function chooseExpDate (chooseDateButton) {
+		var overlay = document.querySelector('#overlay-modal')
+		var closeButton = document.querySelector('.modal_cross');
+		var modalElem = document.querySelector('.modal');
+		
+		modalElem.classList.add('active');
+		overlay.classList.add('active');
+		chooseDateButton.classList.add('date');
+		
+		closeButton.onclick = function () {
+			this.parentNode.classList.remove('active');
+			overlay.classList.remove('active');
+			document.querySelector('.date').classList.remove('date');
+		}
+	}
     function bindListEvent (list) {
+		var chooseDateButton = list.querySelector('.open-modal');
         var editButton = list.querySelector(".fa-edit.header-items");
         var deleteButton = list.querySelector(".fa-trash-alt.header-items");
 		var addTaskButton = list.querySelector(".submit-task");
-        
+		
+        chooseDateButton.addEventListener("click", function () {
+			chooseExpDate(chooseDateButton);
+		});
+
         editButton.onclick = editList;
         deleteButton.onclick = deleteList;
 		addTaskButton.onclick = addTask;
     }
+	document.querySelector('iframe').src = 'calendar/testcal.html';
+	
+	
+	
+	
+	
+	
+	
+	
 }
